@@ -91,7 +91,7 @@ program
     `EO command-line toolkit (${version.what}) ` +
     `built on ${version.when}): https://github.com/objectionary/eoc`
   )
-  .version(version.what, '-v, --version', `Just print the number of the version (${version.what})`)
+  .version(`${version.what} (parser ${parser}, home ${tag})`, '-v, --version', 'Print version info (eoc, parser, home)')
   .helpOption('-?, --help', 'Print this help information')
   .configureHelp({sortOptions: true, sortSubcommands: true});
 

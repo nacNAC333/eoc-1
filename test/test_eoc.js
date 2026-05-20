@@ -10,7 +10,9 @@ const {runSync, weAreOnline} = require('./helpers');
 describe('eoc', () => {
   it('prints its own version', (done) => {
     const stdout = runSync(['--version']);
-    assert.equal(`${version.what  }\n`, stdout);
+    assert(stdout.includes(version.what));
+    assert(stdout.includes('parser'));
+    assert(stdout.includes('home'));
     done();
   });
   it('prints help screen', (done) => {
