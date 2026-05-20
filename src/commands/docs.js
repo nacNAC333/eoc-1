@@ -145,6 +145,25 @@ module.exports = function(opts) {
       }
       const packages = path.join(output, 'packages.html');
       fs.writeFileSync(packages, generatePackageHtml('overall package', all_xmir_htmls, css));
+      // Generate XML summary
+      const summary = path.join(output, 'summary.xml');
+      const xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>'];
+      xml_lines.push('<package-list>');
+      for (const package_name of Object.keys(packages_info)) {
+        xml_lines.push(`  <package name="${package_name}">`);
+        for (const xmir of xmirs) {
+          const relative = path.relative(input, xmir);
+          const pkg = path.dirname(relative).split(path.sep).join('.');
+          if (pkg === package_name) {
+            const name = path.parse(xmir).name;
+            xml_lines.push(`    <object name="${name}" />`);
+          }
+        }
+        xml_lines.push('  </package>');
+      }
+      xml_lines.push('</package-list>');
+      fs.writeFileSync(summary, xml_lines.join('\n'));
+      tracked.print('Generated summary XML at %s', rel(summary));
       tracked.print(`Documentation generation completed in the ${output} directory`);
     } catch (error) {
       console.error('Error generating documentation:', error);
