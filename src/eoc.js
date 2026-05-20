@@ -210,10 +210,13 @@ program.command('resolve')
 
 program.command('transpile')
   .description('Convert EO files into target language')
+  .option('--file <path>', 'Transpile a single .eo file')
   .action(async (str, opts) => {
     pin(program.opts());
     clear(str);
-    if (program.opts().alone === undefined) {
+    if (opts.file) {
+      await pipe()(coms(), ['transpile'], {...program.opts(), file: opts.file});
+    } else if (program.opts().alone === undefined) {
       await pipe()(coms(), ['register', 'assemble', 'lint', 'resolve', 'transpile'], program.opts());
     } else {
       await coms().transpile(program.opts());
@@ -222,10 +225,14 @@ program.command('transpile')
 
 program.command('compile')
   .description('Compile target language sources into binaries')
+  .option('--file <path>', 'Compile a single .eo file (overrides --sources)')
   .action(async (str, opts) => {
     pin(program.opts());
     clear(str);
-    if (program.opts().alone === undefined) {
+    if (opts.file) {
+      // Compile a single file: transpile just that file, then compile
+      await pipe()(coms(), ['transpile', 'compile'], {...program.opts(), file: opts.file});
+    } else if (program.opts().alone === undefined) {
       await pipe()(coms(), ['register', 'assemble', 'lint', 'resolve', 'transpile', 'compile'], program.opts());
     } else {
       await coms().compile(program.opts());

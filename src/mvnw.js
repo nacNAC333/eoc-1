@@ -65,6 +65,7 @@ module.exports.flags = function(opts) {
     `-Deo.placedFormat=csv`,
     `-Deo.skipLinting=${opts.blind ? 'true' : 'false'}`,
     opts.trackTransformationSteps ? '-Deo.trackTransformationSteps' : '',
+    opts.file ? `-Deo.soloFile=${path.resolve(opts.file)}` : '',
   ].filter(flag => flag !== '');
 };
 

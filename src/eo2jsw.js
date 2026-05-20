@@ -19,7 +19,8 @@ const {execSync} = require('child_process'),
       '--foreign eo-foreign.json',
       '--resources', path.resolve(lib, 'resources'),
       args.alone ? '--alone' : '',
-      args.tests ? '--tests' : ''
+      args.tests ? '--tests' : '',
+      args.file ? `--file ${args.file}` : '',
     ];
   },
 
